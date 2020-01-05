@@ -27,3 +27,12 @@ a.u-url:hover {
 a, h1, .modal-title, a.reference.external {
     color: #638dc1eb;
 }
+
+
+.list-group .list-group-item .row-content .least-content {
+    position: inherit;
+}
+
+.btn-footer {
+    position: sticky;
+}
