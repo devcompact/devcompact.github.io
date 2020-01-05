@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<?xml-stylesheet type="text/xsl" href="../assets/xml/rss.xsl" media="all"?><rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Devcompactly (Записи о python)</title><link>http://localhost:8000/</link><description></description><atom:link href="http://localhost:8000/categories/cat_python.xml" rel="self" type="application/rss+xml"></atom:link><language>ru</language><copyright>Contents © 2020 &lt;a href="mailto:devcompactly@gmail.com"&gt;Igor Korolev&lt;/a&gt; </copyright><lastBuildDate>Sun, 05 Jan 2020 07:57:50 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>Пишем контекстные менеджеры в python</title><link>http://localhost:8000/posts/python/ispolzovanie-contextmanager-v-python/</link><dc:creator>Igor Korolev</dc:creator><description>&lt;div&gt;&lt;p&gt;Контекстный менеджер в python - это объект, определяющий, что должно быть сделано "До" и "После"
+тела with выражения. Чаще всего контекстные менеджеры используют для управления ресурсами,
+получение и освобождение. Тема хорошо объясняется на следующем, довольно распространённом, примере с
+функцией open.&lt;/p&gt;
+&lt;p&gt;Допустим, нам необходимо открыть, прочитать и закрыть файл. Причём закрытие файла должно быть
+гарантированным:&lt;/p&gt;
+&lt;p&gt;&lt;a href="http://localhost:8000/posts/python/ispolzovanie-contextmanager-v-python/"&gt;Читать далее…&lt;/a&gt; (1 минут чтения осталось)&lt;/p&gt;&lt;/div&gt;</description><guid>http://localhost:8000/posts/python/ispolzovanie-contextmanager-v-python/</guid><pubDate>Tue, 22 Oct 2019 19:08:28 GMT</pubDate></item></channel></rss>
