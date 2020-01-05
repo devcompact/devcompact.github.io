@@ -1,4 +1,4 @@
-Sitemap: http://localhost:8000/sitemapindex.xml
+Sitemap: https://devcompact.github.io/sitemapindex.xml
 
 User-Agent: *
-Host: localhost:8000
+Host: devcompact.github.io

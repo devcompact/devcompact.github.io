@@ -6,23 +6,23 @@
     xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
                         http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
  <sitemap>
-  <loc>http://localhost:8000/categories/cat_erlang.xml</loc>
-  <lastmod>2020-01-05T07:57:00Z</lastmod>
+  <loc>https://devcompact.github.io/categories/cat_erlang.xml</loc>
+  <lastmod>2020-01-05T09:13:00Z</lastmod>
  </sitemap>
  <sitemap>
-  <loc>http://localhost:8000/categories/cat_python.xml</loc>
-  <lastmod>2020-01-05T07:57:00Z</lastmod>
+  <loc>https://devcompact.github.io/categories/cat_python.xml</loc>
+  <lastmod>2020-01-05T09:13:00Z</lastmod>
  </sitemap>
  <sitemap>
-  <loc>http://localhost:8000/galleries/rss.xml</loc>
-  <lastmod>2020-01-05T07:57:00Z</lastmod>
+  <loc>https://devcompact.github.io/galleries/rss.xml</loc>
+  <lastmod>2020-01-05T09:13:00Z</lastmod>
  </sitemap>
  <sitemap>
-  <loc>http://localhost:8000/rss.xml</loc>
-  <lastmod>2020-01-05T07:57:00Z</lastmod>
+  <loc>https://devcompact.github.io/rss.xml</loc>
+  <lastmod>2020-01-05T09:13:00Z</lastmod>
  </sitemap>
  <sitemap>
-  <loc>http://localhost:8000/sitemap.xml</loc>
-  <lastmod>2020-01-05T07:57:00Z</lastmod>
+  <loc>https://devcompact.github.io/sitemap.xml</loc>
+  <lastmod>2020-01-05T09:13:00Z</lastmod>
  </sitemap>
 </sitemapindex>

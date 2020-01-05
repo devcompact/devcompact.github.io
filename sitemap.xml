@@ -6,51 +6,51 @@
     xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
                         http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
  <url>
-  <loc>http://localhost:8000/</loc>
+  <loc>https://devcompact.github.io/</loc>
   <lastmod>2019-12-08T19:42:00Z</lastmod>
  </url>
  <url>
-  <loc>http://localhost:8000/2019/</loc>
+  <loc>https://devcompact.github.io/2019/</loc>
   <lastmod>2019-12-07T07:19:00Z</lastmod>
  </url>
  <url>
-  <loc>http://localhost:8000/archive.html</loc>
-  <lastmod>2020-01-05T07:57:00Z</lastmod>
+  <loc>https://devcompact.github.io/archive.html</loc>
+  <lastmod>2020-01-05T09:13:00Z</lastmod>
  </url>
  <url>
-  <loc>http://localhost:8000/categories/</loc>
+  <loc>https://devcompact.github.io/categories/</loc>
   <lastmod>2019-12-07T07:19:00Z</lastmod>
  </url>
  <url>
-  <loc>http://localhost:8000/categories/cat_erlang/</loc>
+  <loc>https://devcompact.github.io/categories/cat_erlang/</loc>
   <lastmod>2019-12-07T07:19:00Z</lastmod>
  </url>
  <url>
-  <loc>http://localhost:8000/categories/cat_python/</loc>
+  <loc>https://devcompact.github.io/categories/cat_python/</loc>
   <lastmod>2019-12-07T07:19:00Z</lastmod>
  </url>
  <url>
-  <loc>http://localhost:8000/galleries/</loc>
+  <loc>https://devcompact.github.io/galleries/</loc>
   <lastmod>2019-12-07T07:19:00Z</lastmod>
  </url>
  <url>
-  <loc>http://localhost:8000/listings/</loc>
+  <loc>https://devcompact.github.io/listings/</loc>
   <lastmod>2019-12-07T07:19:00Z</lastmod>
  </url>
  <url>
-  <loc>http://localhost:8000/pages/o-bloge/</loc>
+  <loc>https://devcompact.github.io/pages/o-bloge/</loc>
   <lastmod>2019-12-07T07:19:00Z</lastmod>
  </url>
  <url>
-  <loc>http://localhost:8000/posts/erlang/kak-peredat-otritsatelnoe-chislo-v-kachestve-parametra-konsolnoi-programme-erlang/</loc>
+  <loc>https://devcompact.github.io/posts/erlang/kak-peredat-otritsatelnoe-chislo-v-kachestve-parametra-konsolnoi-programme-erlang/</loc>
   <lastmod>2019-12-07T07:19:00Z</lastmod>
  </url>
  <url>
-  <loc>http://localhost:8000/posts/erlang/otobrazhenie-kirillitsy-v-erlang/</loc>
+  <loc>https://devcompact.github.io/posts/erlang/otobrazhenie-kirillitsy-v-erlang/</loc>
   <lastmod>2019-12-07T07:19:00Z</lastmod>
  </url>
  <url>
-  <loc>http://localhost:8000/posts/python/ispolzovanie-contextmanager-v-python/</loc>
+  <loc>https://devcompact.github.io/posts/python/ispolzovanie-contextmanager-v-python/</loc>
   <lastmod>2019-12-07T07:19:00Z</lastmod>
  </url>
 </urlset>
