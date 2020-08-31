@@ -1,70 +1,88 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html prefix="og: http://ogp.me/ns# article: http://ogp.me/ns/article#
+" lang="ru">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Пишем контекстные менеджеры в python | Devcompactly</title>
 <link href="../../../assets/css/all-nocdn.css" rel="stylesheet" type="text/css">
+<meta name="theme-color" content="#5670d4">
+<meta name="generator" content="Nikola (getnikola.com)">
 <link rel="alternate" type="application/rss+xml" title="RSS" href="../../../rss.xml">
 <link rel="canonical" href="https://devcompact.github.io/posts/python/ispolzovanie-contextmanager-v-python/">
 <link rel="icon" href="../../../favicon-16x16.png" sizes="16x16">
 <link rel="icon" href="../../../favicon-32x32.png" sizes="32x32">
 <link rel="icon" href="../../../favicon.ico" sizes="128x128">
-<!--[if lt IE 9]>
-            <script src="../../../assets/js/html5shiv.min.js"></script>
-            <script src="../../../assets/js/respond.min.js"></script>
-        <![endif]--><meta name="google-site-verification" content="lb4wz1vPmJm71UPEDx88JTnTsC9RnqK3675fqbbr0gQ">
+<!--[if lt IE 9]><script src="../../../assets/js/html5.js"></script><![endif]--><meta name="google-site-verification" content="lb4wz1vPmJm71UPEDx88JTnTsC9RnqK3675fqbbr0gQ">
 <meta name="author" content="Igor Korolev">
 <link rel="prev" href="../../erlang/kak-peredat-otritsatelnoe-chislo-v-kachestve-parametra-konsolnoi-programme-erlang/" title="Как передать отрицательное число в качестве параметра консольной программе erlang" type="text/html">
+<meta property="og:site_name" content="Devcompactly">
+<meta property="og:title" content="Пишем контекстные менеджеры в python">
+<meta property="og:url" content="https://devcompact.github.io/posts/python/ispolzovanie-contextmanager-v-python/">
+<meta property="og:description" content='Контекстный менеджер в python - это объект, определяющий, что должно быть сделано "До" и "После"
+тела with выражения. Чаще всего контекстные менеджеры используют для управления ресурсами,
+получение и '>
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2019-10-22T22:08:28+03:00">
 </head>
 <body>
 <a href="#content" class="sr-only sr-only-focusable">Перейти к главному содержимому</a>
 
 <!-- Menubar -->
 
-<nav class="navbar  header-panel shadow-z-3" role="navigation"><div class="container-fluid">
-        <div class="row">
-          <div class="col-xs-3">
-            <h1 class="title-blog">
-                <a href="https://devcompact.github.io/">
-                        <span id="blog-title">Devcompactly</span>
-                    </a>
-            </h1>
-          </div>
-          <div class="col-xs-9">
-            <a id="hamburger" class="btn btn-raised" href="javascript:void(0);" onclick="menuToggle();">☰</a>
-          </div>
-        </div>
-      </div>
-<!-- /.container-fluid -->
-</nav><div class="container-fluid main" id="content" role="main">
-        <div class="row">
-            <nav class="col-xs-12 col-sm-3 menu"><ul>
-<li class="withripple"><a href="../../../archive.html">Архив</a></li>
-                <li class="withripple"><a href="../../../categories/">Тэги</a></li>
-                <li class="withripple"><a href="../../../rss.xml">RSS лента</a></li>
-                <li class="withripple"><a href="../../../pages/o-bloge/">О блоге</a></li>
+<nav class="navbar navbar-expand-md static-top mb-4 navbar-light"><div class="container">
+<!-- This keeps the margins nice -->
+        <a class="navbar-brand" href="https://devcompact.github.io/">
 
-                    
-                </ul>
-<ul></ul></nav><div class="posts-material col-xs-12 col-sm-9">
-                <div class="col-xs-12 col-md-11 content-material">
+            <span id="blog-title">Devcompactly</span>
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#bs-navbar" aria-controls="bs-navbar" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="bs-navbar">
+            <ul class="navbar-nav mr-auto">
+<li class="nav-item">
+<a href="../../../archive/" class="nav-link">Архив</a>
+                </li>
+<li class="nav-item">
+<a href="../../../categories/" class="nav-link">Тэги</a>
+                </li>
+<li class="nav-item">
+<a href="../../../rss.xml" class="nav-link">RSS лента</a>
+                </li>
+<li class="nav-item">
+<a href="../../../pages/o-bloge/" class="nav-link">О блоге</a>
+
+                
+            </li>
+</ul>
+<ul class="navbar-nav navbar-right"></ul>
+</div>
+<!-- /.navbar-collapse -->
+    </div>
+<!-- /.container -->
+</nav><!-- End of Menubar --><div class="container" id="content" role="main">
+    <div class="body-content">
+        <!--Body content-->
+        
+        
 <article class="post-text h-entry hentry postpage" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title" itemprop="headline name"><a href="." class="u-url">Пишем контекстные менеджеры в python</a></h1>
-<hr>
-<div class="metadata">
-            <span class="byline author vcard">
-                <a href=".">
-                        <img class="img-circle" src="../../../images/avatar.png" alt="icon">
+
+        <div class="metadata">
+            <p class="byline author vcard"><span class="byline-name fn" itemprop="author">
                     Igor Korolev
-                </a>
-            </span>
-            <span class="dateline">
-                <a href="." rel="bookmark"><i class="mdi-device-access-time"></i>
-                    <time class="published dt-published" datetime="2019-10-22T22:08:28+03:00" itemprop="datePublished" title="2019-10-22 22:08">2019-10-22 22:08</time></a>
-            </span>
+            </span></p>
+            <p class="dateline">
+            <a href="." rel="bookmark">
+            <time class="published dt-published" datetime="2019-10-22T22:08:28+03:00" itemprop="datePublished" title="2019-10-22 22:08">2019-10-22 22:08</time></a>
+            </p>
+            
+
         </div>
         
-        <hr></header><div class="e-content entry-content" itemprop="articleBody text">
+
+    </header><div class="e-content entry-content" itemprop="articleBody text" style="font-size: 17px">
     <div>
 <p>Контекстный менеджер в python - это объект, определяющий, что должно быть сделано "До" и "После"
 тела with выражения. Чаще всего контекстные менеджеры используют для управления ресурсами,
@@ -73,22 +91,22 @@
 <p>Допустим, нам необходимо открыть, прочитать и закрыть файл. Причём закрытие файла должно быть
 гарантированным:</p>
 <!-- TEASER_END -->
-<pre class="code python"><a name="rest_code_7a3563f7691e45d184aae85a288d40d1-1"></a><span class="n">file_descriptor</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s2">"test_file.txt"</span><span class="p">)</span>
-<a name="rest_code_7a3563f7691e45d184aae85a288d40d1-2"></a><span class="n">file_descriptor</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s2">"just example text"</span><span class="p">)</span>
-<a name="rest_code_7a3563f7691e45d184aae85a288d40d1-3"></a><span class="n">file_descriptor</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+<pre class="code python"><a name="rest_code_078c283bca4c4cc5bf0db6bc335dfb5f-1"></a><span class="n">file_descriptor</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s2">"test_file.txt"</span><span class="p">)</span>
+<a name="rest_code_078c283bca4c4cc5bf0db6bc335dfb5f-2"></a><span class="n">file_descriptor</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s2">"just example text"</span><span class="p">)</span>
+<a name="rest_code_078c283bca4c4cc5bf0db6bc335dfb5f-3"></a><span class="n">file_descriptor</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
 </pre>
 <p>В случае возникновения какого-либо исключения в промежутке между открытием и закрытием файла
 .close() не отработает - это утечка файлового дескриптора. Этого можно избежать, применив
 finally:</p>
-<pre class="code python"><a name="rest_code_5791198db57b4fba857e8bf8f063e37b-1"></a><span class="n">file_descriptor</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s2">"test_file.txt"</span><span class="p">)</span>
-<a name="rest_code_5791198db57b4fba857e8bf8f063e37b-2"></a><span class="k">try</span><span class="p">:</span>
-<a name="rest_code_5791198db57b4fba857e8bf8f063e37b-3"></a>    <span class="n">file_descriptor</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s2">"just example text"</span><span class="p">)</span>
-<a name="rest_code_5791198db57b4fba857e8bf8f063e37b-4"></a><span class="k">finally</span><span class="p">:</span>
-<a name="rest_code_5791198db57b4fba857e8bf8f063e37b-5"></a>    <span class="n">file_descriptor</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+<pre class="code python"><a name="rest_code_8f630d4ebe0b4446927a0a5bb2233f7d-1"></a><span class="n">file_descriptor</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s2">"test_file.txt"</span><span class="p">)</span>
+<a name="rest_code_8f630d4ebe0b4446927a0a5bb2233f7d-2"></a><span class="k">try</span><span class="p">:</span>
+<a name="rest_code_8f630d4ebe0b4446927a0a5bb2233f7d-3"></a>    <span class="n">file_descriptor</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s2">"just example text"</span><span class="p">)</span>
+<a name="rest_code_8f630d4ebe0b4446927a0a5bb2233f7d-4"></a><span class="k">finally</span><span class="p">:</span>
+<a name="rest_code_8f630d4ebe0b4446927a0a5bb2233f7d-5"></a>    <span class="n">file_descriptor</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
 </pre>
 <p>Теперь то же самое, но в виде контекстного менеджера:</p>
-<pre class="code python"><a name="rest_code_88bbe5efaee64379a7ce68bc1b2fd47a-1"></a><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">"test_file.txt"</span><span class="p">)</span> <span class="k">as</span> <span class="n">file_descriptor</span><span class="p">:</span>
-<a name="rest_code_88bbe5efaee64379a7ce68bc1b2fd47a-2"></a>    <span class="n">content</span> <span class="o">=</span> <span class="n">file_descriptor</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+<pre class="code python"><a name="rest_code_eb69d2c755514d13909a016286d69731-1"></a><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">"test_file.txt"</span><span class="p">)</span> <span class="k">as</span> <span class="n">file_descriptor</span><span class="p">:</span>
+<a name="rest_code_eb69d2c755514d13909a016286d69731-2"></a>    <span class="n">content</span> <span class="o">=</span> <span class="n">file_descriptor</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
 </pre>
 <p>Лаконичнее и чище.</p>
 <div class="line-block">
@@ -104,51 +122,51 @@ finally:</p>
 </ol>
 <p>Данный способ заключается в написании класса, в котором необходимо определить специальные, указанные
 выше, методы:</p>
-<pre class="code python"><a name="rest_code_d65bd574601549bfaf35cad6904a9cea-1"></a><span class="kn">import</span> <span class="nn">sqlite3</span>
-<a name="rest_code_d65bd574601549bfaf35cad6904a9cea-2"></a>
-<a name="rest_code_d65bd574601549bfaf35cad6904a9cea-3"></a>
-<a name="rest_code_d65bd574601549bfaf35cad6904a9cea-4"></a><span class="k">class</span> <span class="nc">DBManager</span><span class="p">:</span>
-<a name="rest_code_d65bd574601549bfaf35cad6904a9cea-5"></a>
-<a name="rest_code_d65bd574601549bfaf35cad6904a9cea-6"></a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<a name="rest_code_d65bd574601549bfaf35cad6904a9cea-7"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">conn</span> <span class="o">=</span> <span class="bp">None</span>
-<a name="rest_code_d65bd574601549bfaf35cad6904a9cea-8"></a>
-<a name="rest_code_d65bd574601549bfaf35cad6904a9cea-9"></a>    <span class="k">def</span> <span class="fm">__enter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<a name="rest_code_d65bd574601549bfaf35cad6904a9cea-10"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">connect</span><span class="p">()</span>
-<a name="rest_code_d65bd574601549bfaf35cad6904a9cea-11"></a>        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">conn</span>
-<a name="rest_code_d65bd574601549bfaf35cad6904a9cea-12"></a>
-<a name="rest_code_d65bd574601549bfaf35cad6904a9cea-13"></a>    <span class="k">def</span> <span class="fm">__exit__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">exc_info</span><span class="p">):</span>
-<a name="rest_code_d65bd574601549bfaf35cad6904a9cea-14"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">disconnect</span><span class="p">()</span>
-<a name="rest_code_d65bd574601549bfaf35cad6904a9cea-15"></a>
-<a name="rest_code_d65bd574601549bfaf35cad6904a9cea-16"></a>    <span class="k">def</span> <span class="nf">connect</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<a name="rest_code_d65bd574601549bfaf35cad6904a9cea-17"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">conn</span> <span class="o">=</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="s2">"test.db"</span><span class="p">)</span>
-<a name="rest_code_d65bd574601549bfaf35cad6904a9cea-18"></a>
-<a name="rest_code_d65bd574601549bfaf35cad6904a9cea-19"></a>    <span class="k">def</span> <span class="nf">disconnect</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<a name="rest_code_d65bd574601549bfaf35cad6904a9cea-20"></a>       <span class="bp">self</span><span class="o">.</span><span class="n">conn</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+<pre class="code python"><a name="rest_code_b9d145a0d49b415ca85fa9b297040ad8-1"></a><span class="kn">import</span> <span class="nn">sqlite3</span>
+<a name="rest_code_b9d145a0d49b415ca85fa9b297040ad8-2"></a>
+<a name="rest_code_b9d145a0d49b415ca85fa9b297040ad8-3"></a>
+<a name="rest_code_b9d145a0d49b415ca85fa9b297040ad8-4"></a><span class="k">class</span> <span class="nc">DBManager</span><span class="p">:</span>
+<a name="rest_code_b9d145a0d49b415ca85fa9b297040ad8-5"></a>
+<a name="rest_code_b9d145a0d49b415ca85fa9b297040ad8-6"></a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<a name="rest_code_b9d145a0d49b415ca85fa9b297040ad8-7"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">conn</span> <span class="o">=</span> <span class="bp">None</span>
+<a name="rest_code_b9d145a0d49b415ca85fa9b297040ad8-8"></a>
+<a name="rest_code_b9d145a0d49b415ca85fa9b297040ad8-9"></a>    <span class="k">def</span> <span class="fm">__enter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<a name="rest_code_b9d145a0d49b415ca85fa9b297040ad8-10"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">connect</span><span class="p">()</span>
+<a name="rest_code_b9d145a0d49b415ca85fa9b297040ad8-11"></a>        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">conn</span>
+<a name="rest_code_b9d145a0d49b415ca85fa9b297040ad8-12"></a>
+<a name="rest_code_b9d145a0d49b415ca85fa9b297040ad8-13"></a>    <span class="k">def</span> <span class="fm">__exit__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">exc_info</span><span class="p">):</span>
+<a name="rest_code_b9d145a0d49b415ca85fa9b297040ad8-14"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">disconnect</span><span class="p">()</span>
+<a name="rest_code_b9d145a0d49b415ca85fa9b297040ad8-15"></a>
+<a name="rest_code_b9d145a0d49b415ca85fa9b297040ad8-16"></a>    <span class="k">def</span> <span class="nf">connect</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<a name="rest_code_b9d145a0d49b415ca85fa9b297040ad8-17"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">conn</span> <span class="o">=</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="s2">"test.db"</span><span class="p">)</span>
+<a name="rest_code_b9d145a0d49b415ca85fa9b297040ad8-18"></a>
+<a name="rest_code_b9d145a0d49b415ca85fa9b297040ad8-19"></a>    <span class="k">def</span> <span class="nf">disconnect</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<a name="rest_code_b9d145a0d49b415ca85fa9b297040ad8-20"></a>       <span class="bp">self</span><span class="o">.</span><span class="n">conn</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
 </pre>
 <p>И теперь можно использовать так:</p>
-<pre class="code python"><a name="rest_code_2cb829fd2e984f2fb4f1fc4fb91cea53-1"></a><span class="k">with</span> <span class="n">DBManager</span><span class="p">()</span> <span class="k">as</span> <span class="n">db</span><span class="p">:</span>
-<a name="rest_code_2cb829fd2e984f2fb4f1fc4fb91cea53-2"></a>    <span class="k">print</span><span class="p">(</span><span class="s2">"2 x 2 = "</span><span class="p">,</span> <span class="n">db</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">"SELECT 2 * 2;"</span><span class="p">)</span><span class="o">.</span><span class="n">fetchone</span><span class="p">()[</span><span class="mi">0</span><span class="p">])</span>
+<pre class="code python"><a name="rest_code_d02408b6d7694fb395436035439a3b14-1"></a><span class="k">with</span> <span class="n">DBManager</span><span class="p">()</span> <span class="k">as</span> <span class="n">db</span><span class="p">:</span>
+<a name="rest_code_d02408b6d7694fb395436035439a3b14-2"></a>    <span class="k">print</span><span class="p">(</span><span class="s2">"2 x 2 = "</span><span class="p">,</span> <span class="n">db</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">"SELECT 2 * 2;"</span><span class="p">)</span><span class="o">.</span><span class="n">fetchone</span><span class="p">()[</span><span class="mi">0</span><span class="p">])</span>
 </pre>
 <ol class="arabic simple" start="2">
 <li><strong>Способ: декоратор contextlib.contextmanager:</strong></li>
 </ol>
 <p>contextlib - это встроенная библиотека, которая помогает писать понятные контекстные менеджеры.
 Ниже реализация аналога примера из пункта 1:</p>
-<pre class="code python"><a name="rest_code_75dc7760f41248cab6809429a95bba6d-1"></a><span class="kn">import</span> <span class="nn">contextlib</span>
-<a name="rest_code_75dc7760f41248cab6809429a95bba6d-2"></a><span class="kn">import</span> <span class="nn">sqlite3</span>
-<a name="rest_code_75dc7760f41248cab6809429a95bba6d-3"></a>
-<a name="rest_code_75dc7760f41248cab6809429a95bba6d-4"></a>
-<a name="rest_code_75dc7760f41248cab6809429a95bba6d-5"></a><span class="nd">@contextlib.contextmanager</span>
-<a name="rest_code_75dc7760f41248cab6809429a95bba6d-6"></a><span class="k">def</span> <span class="nf">db_manager</span><span class="p">():</span>
-<a name="rest_code_75dc7760f41248cab6809429a95bba6d-7"></a>   <span class="n">conn</span> <span class="o">=</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="s2">"test.db"</span><span class="p">)</span>
-<a name="rest_code_75dc7760f41248cab6809429a95bba6d-8"></a>    <span class="k">try</span><span class="p">:</span>
-<a name="rest_code_75dc7760f41248cab6809429a95bba6d-9"></a>        <span class="k">yield</span> <span class="n">conn</span>
-<a name="rest_code_75dc7760f41248cab6809429a95bba6d-10"></a>    <span class="k">finally</span><span class="p">:</span>
-<a name="rest_code_75dc7760f41248cab6809429a95bba6d-11"></a>        <span class="n">conn</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+<pre class="code python"><a name="rest_code_8c1e1fb6f33a41a6b4b699926226f8f0-1"></a><span class="kn">import</span> <span class="nn">contextlib</span>
+<a name="rest_code_8c1e1fb6f33a41a6b4b699926226f8f0-2"></a><span class="kn">import</span> <span class="nn">sqlite3</span>
+<a name="rest_code_8c1e1fb6f33a41a6b4b699926226f8f0-3"></a>
+<a name="rest_code_8c1e1fb6f33a41a6b4b699926226f8f0-4"></a>
+<a name="rest_code_8c1e1fb6f33a41a6b4b699926226f8f0-5"></a><span class="nd">@contextlib.contextmanager</span>
+<a name="rest_code_8c1e1fb6f33a41a6b4b699926226f8f0-6"></a><span class="k">def</span> <span class="nf">db_manager</span><span class="p">():</span>
+<a name="rest_code_8c1e1fb6f33a41a6b4b699926226f8f0-7"></a>   <span class="n">conn</span> <span class="o">=</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="s2">"test.db"</span><span class="p">)</span>
+<a name="rest_code_8c1e1fb6f33a41a6b4b699926226f8f0-8"></a>    <span class="k">try</span><span class="p">:</span>
+<a name="rest_code_8c1e1fb6f33a41a6b4b699926226f8f0-9"></a>        <span class="k">yield</span> <span class="n">conn</span>
+<a name="rest_code_8c1e1fb6f33a41a6b4b699926226f8f0-10"></a>    <span class="k">finally</span><span class="p">:</span>
+<a name="rest_code_8c1e1fb6f33a41a6b4b699926226f8f0-11"></a>        <span class="n">conn</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
 </pre>
 <p>Использование:</p>
-<pre class="code python"><a name="rest_code_c8779460b833477cb0a4a344afacf16f-1"></a><span class="k">with</span> <span class="n">db_manager</span><span class="p">()</span> <span class="k">as</span> <span class="n">db</span><span class="p">:</span>
-<a name="rest_code_c8779460b833477cb0a4a344afacf16f-2"></a>    <span class="k">print</span><span class="p">(</span><span class="s2">"2 x 2 = "</span><span class="p">,</span> <span class="n">db</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">"SELECT 2 * 2;"</span><span class="p">)</span><span class="o">.</span><span class="n">fetchone</span><span class="p">()[</span><span class="mi">0</span><span class="p">])</span>
+<pre class="code python"><a name="rest_code_5befa748bbf040cd9e178d42c2226545-1"></a><span class="k">with</span> <span class="n">db_manager</span><span class="p">()</span> <span class="k">as</span> <span class="n">db</span><span class="p">:</span>
+<a name="rest_code_5befa748bbf040cd9e178d42c2226545-2"></a>    <span class="k">print</span><span class="p">(</span><span class="s2">"2 x 2 = "</span><span class="p">,</span> <span class="n">db</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">"SELECT 2 * 2;"</span><span class="p">)</span><span class="o">.</span><span class="n">fetchone</span><span class="p">()[</span><span class="mi">0</span><span class="p">])</span>
 </pre>
 <p>Обратите внимание на использование yield. По сути всё, что в блоке try - это то же самое, что и
 __enter__ метод, а в finally это тот самый клинап ресурсов - __exit__.</p>
@@ -159,91 +177,27 @@ __enter__ метод, а в finally это тот самый клинап рес
 close().</p>
 <p>Так, в sqlite3 есть метод .close(), который отвечает за закрытие коннекта к БД, а значит мы
 можем спокойно использовать данный способ:</p>
-<pre class="code python"><a name="rest_code_0c2396a3a75c479cb83bbdfdf78dd25b-1"></a><span class="k">with</span> <span class="n">contextlib</span><span class="o">.</span><span class="n">closing</span><span class="p">(</span><span class="n">sqlite3</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="s2">"test.db"</span><span class="p">))</span> <span class="k">as</span> <span class="n">conn</span><span class="p">:</span>
-<a name="rest_code_0c2396a3a75c479cb83bbdfdf78dd25b-2"></a>    <span class="n">conn</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">"SELECT 2 * 2;"</span><span class="p">)</span><span class="o">.</span><span class="n">fetchone</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
+<pre class="code python"><a name="rest_code_b689d5bbe3734a43b69cd1f0c400427a-1"></a><span class="k">with</span> <span class="n">contextlib</span><span class="o">.</span><span class="n">closing</span><span class="p">(</span><span class="n">sqlite3</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="s2">"test.db"</span><span class="p">))</span> <span class="k">as</span> <span class="n">conn</span><span class="p">:</span>
+<a name="rest_code_b689d5bbe3734a43b69cd1f0c400427a-2"></a>    <span class="n">conn</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">"SELECT 2 * 2;"</span><span class="p">)</span><span class="o">.</span><span class="n">fetchone</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
 </pre>
 <p>Тема контекстных менеджеров достаточно обширная и рекомендуется, как минимум, самостоятельно
 поизучать какие ещё есть встроенные контекстные менеджеры(включая те, что есть в библиотеке
 contextlib).</p>
 </div>
     </div>
-    <aside class="postpromonav"><nav><ul class="pager">
+    <aside class="postpromonav"><nav><ul class="pager hidden-print">
 <li class="previous">
                 <a href="../../erlang/kak-peredat-otritsatelnoe-chislo-v-kachestve-parametra-konsolnoi-programme-erlang/" rel="prev" title="Как передать отрицательное число в качестве параметра консольной программе erlang">Предыдущая запись</a>
             </li>
-        </ul></nav></aside></article>
+        </ul></nav></aside></article><!--End of body content--><footer id="footer">
+            Contents © 2020         <a href="mailto:devcompactly@gmail.com">Igor Korolev</a> - Powered by         <a href="https://getnikola.com" rel="nofollow">Nikola</a>         s
+            
+        </footer>
 </div>
-            </div>
-        </div>
-        <button class="btn btn-fab btn-raised btn-material-blue btn-footer" data-toggle="modal" data-target="#footer-dialog">
-            <i class="mdi-communication-message"></i>
-        </button>
-        <div id="footer-dialog" class="modal fade" tabindex="-1">
-          <div class="modal-dialog">
-            <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                <h4 class="modal-title">Igor Korolev</h4>
-                <div>
-                    
-<img class="img-circle" style="float:left;margin:10px 20px 10px 0px;max-height:200px;" src="../../../images/avatar.png"><p>Привет!
-<br>
-Меня зовут Игорь Королёв и я автор этого блога.
-На данный момент меня интересуют следующие области: автоматизация тестирования, программирование на python и erlang. 
-Oб этом и будут статьи.
-<br><br>
-Основная <b><span style="color:#2E86C1">цель</span></b> данного блога - материал в сжатой форме по python и erlang и их 
-применении. 
-</p>
-
-                </div>
-                <hr>
-</div>
-              <div class="modal-body">
-                    Contents © 2020         <a href="mailto:devcompactly@gmail.com">Igor Korolev</a> - Powered by         <a href="https://getnikola.com" rel="nofollow">Nikola</a>         
-                    
-              </div>
-              <div class="modal-footer">
-                <button class="btn btn-primary" data-dismiss="modal">Ok</button>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="source-button">
-    <a class="btn btn-fab btn-raised btn-material-indigo" target="_blank" href="index.rst" title="Источник">
-        <i class="mdi-file-cloud-download"></i>
-    </a>
-
-        </div>
 </div>
 
 
-            <script src="../../../assets/js/all-nocdn.js"></script><script>
-
-            $(document).ready(function() {
-                // This command is used to initialize some elements and make them work properly
-                $.material.init();
-            });
-
-            $(window).on("resize", function() {
-                if($(window).width() > 767) {
-                  $("html, body").height($(window).height());
-                  $(".main, .menu").height($(window).height() - $(".header-panel").outerHeight() - 76 );
-                  $(".posts-material").height($(window).height());
-                } else {
-                  $("html, body").css('height', '');
-                  $(".main, .menu").css('height', '');
-                  $(".posts-material").css('height', '');
-                }
-            }).trigger("resize");
-
-            function menuToggle() {
-                $("nav.menu, ul").toggleClass('responsive', '');
-            }
-        </script><!-- fancy dates --><script>
-    moment.locale("ru");
-    fancydates(0, "YYYY-MM-DD HH:mm");
-    </script><!-- end fancy dates --><script>
+        <script src="../../../assets/js/all-nocdn.js"></script><script>
     baguetteBox.run('div#content', {
         ignoreClass: 'islink',
         captions: function(element) {
