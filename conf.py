@@ -138,7 +138,7 @@ TRANSLATIONS_PATTERN = '{path}.{lang}.{ext}'
 
 NAVIGATION_LINKS = {
     DEFAULT_LANG: (
-        ("/archive.html", "Архив"),
+        ("/archive/", "Архив"),
         ("/categories/", "Тэги"),
         ("/rss.xml", "RSS лента"),
         ("/pages/o-bloge/", "О блоге"),
@@ -153,12 +153,12 @@ NAVIGATION_ALT_LINKS = {
 }
 
 # Name of the theme to use.
-THEME = "custom_theme"
-# THEME = "bootstrap4"
+THEME = "devcompactly"
 
+#THEME = "bootstrap4"
 # Primary color of your theme. This will be used to customize your theme.
 # Must be a HEX value.
-THEME_COLOR = '#5670d4'
+# THEME_COLOR = '#7F3B2D'
 
 # Theme configuration. Fully theme-dependent. (translatable)
 # Examples below are for bootblog4.
@@ -179,8 +179,8 @@ THEME_CONFIG = {
         # Strip HTML from featured post text.
         'featured_strip_html': False,
         # Contents of the sidebar, If empty, the sidebar is not displayed.
-        'sidebar': ''
-    }
+        'sidebar': '',
+},
 }
 
 # POSTS and PAGES contains (wildcard, destination, template) tuples.
@@ -561,8 +561,8 @@ FRONT_INDEX_HEADER = {
 # output / TRANSLATION[lang] / ARCHIVE_PATH / YEAR / MONTH / index.html
 # output / TRANSLATION[lang] / ARCHIVE_PATH / YEAR / MONTH / DAY / index.html
 # (translatable)
-# ARCHIVE_PATH = ""
-# ARCHIVE_FILENAME = "archive.html"
+ARCHIVE_PATH = "archive"
+ARCHIVE_FILENAME = "index.html"
 
 # If ARCHIVES_ARE_INDEXES is set to True, each archive page which contains a list
 # of posts will contain the posts themselves. If set to False, it will be just a
@@ -874,7 +874,7 @@ IMAGE_FOLDERS = {'images': 'images'}
 # paraiso-light, pastie, perldoc, rrt, tango, trac, vim, vs, xcode
 # This list MAY be incomplete since pygments adds styles every now and then.
 # Check with list(pygments.styles.get_all_styles()) in an interpreter.
-# CODE_COLOR_SCHEME = 'default'
+CODE_COLOR_SCHEME = 'manni'
 
 # FAVICONS contains (name, file, size) tuples.
 # Used to create favicon link like this:
@@ -1339,27 +1339,12 @@ WARN_ABOUT_TAG_METADATA = False
 
 # Put in global_context things you want available on all your templates.
 # It can be anything, data, functions, modules, etc.
-BIOGRAPHY = """
-<img class="img-circle" style="float:left;margin:10px 20px 10px 0px;max-height:200px;" src="/images/avatar.png">
-<p>Привет!
-<br>
-Меня зовут Игорь Королёв и я автор этого блога.
-На данный момент меня интересуют следующие области: автоматизация тестирования, программирование на python и erlang. 
-Oб этом и будут статьи.
-<br><br>
-Основная <b><span style="color:#2E86C1">цель</span></b> данного блога - материал в сжатой форме по python и erlang и их 
-применении. 
-</p>
-"""
 
 GLOBAL_CONTEXT = {
-    'author_avatar': '/images/avatar.png',
-    "biography": BIOGRAPHY,
+    'show_sourcelink': False  # Disable "Download" links of source pagess
 }
 
 # Add functions here and they will be called with template
 # GLOBAL_CONTEXT as parameter when the template is about to be
 # rendered
 GLOBAL_CONTEXT_FILLER = []
-
-#!
